@@ -1,10 +1,14 @@
 import multiprocessing as mp
+import time
 
 def demoFunc(targetDict, targetList):
-    targetDict[1] = '1'
-    targetDict['2'] = 2
-    targetDict[0.25] = None
-    targetList.reverse()
+    counter = 0
+    while True:
+        targetDict[1] = '1'
+        targetDict['2'] = counter
+        targetDict[0.25] = None
+        targetList.reverse()
+        counter += 1
 
 if __name__ == '__main__':
     with mp.Manager() as manager:
@@ -13,6 +17,10 @@ if __name__ == '__main__':
 
         p = mp.Process(target=demoFunc, args=(myDict, myList))
         p.start()
+        while True:
+            print(myDict)
+            time.sleep(1)
+
         p.join()
 
         print(myDict)
